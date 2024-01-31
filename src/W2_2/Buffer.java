@@ -2,35 +2,29 @@ package W2_2;
 
 public class Buffer {
 
-    private boolean full;
+    private boolean available;
     private int data;
 
     public Buffer() {
-        this.full = false;
+        this.available = true;
     }
 
-    public synchronized void put(int data) {
-        while(full) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            this.data = data;
-            full = true;
-            notify();
-        }
-    }
 
-    public synchronized int get() {
-        while(!full) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+    public synchronized void put(int data, Producer p) throws InterruptedException {
+        while(available){
+            System.out.println("Producer " + p + " is waiting to send value " + data);
+            wait();
         }
-        full = false;
+        this.data = data;
+        available = true;
+        notifyAll();
+    }
+    public synchronized int get(Consumer c) throws InterruptedException {
+        while(available) {
+            System.out.println("Consumer " + c + " is waiting to receive value " + data);
+            wait();
+        }
+        available = true;
         notify();
         return data;
     }

@@ -17,9 +17,15 @@ public class Producer extends Thread{
     @Override
     public void run() {
         Random random = new Random();
-        for (int i = 0; i < N; i++){
-            //buffer.put(random.nextInt(), this);
+        while(!isInterrupted()){
+            try {
+                buffer.put(random.nextInt(), this);
+            } catch (InterruptedException e) {
+                break; // terminate thread.
+            }
         }
+        System.out.println("Producer " + name + " done!");
     }
+
 
 }
