@@ -1,10 +1,11 @@
 package W2_2;
 
+import W2_2.Buffer;
+
 import java.util.Random;
 
 public class Producer extends Thread{
 
-    public static final int N = 5;
 
     private String name;
     private Buffer buffer;
@@ -17,15 +18,15 @@ public class Producer extends Thread{
     @Override
     public void run() {
         Random random = new Random();
-        while(!isInterrupted()){
-            try {
-                buffer.put(random.nextInt(), this);
-            } catch (InterruptedException e) {
-                break; // terminate thread.
-            }
+        try {
+            buffer.put(random.nextInt(10), this);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-        System.out.println("Producer " + name + " done!");
     }
 
+    public String getProducerName() {
+        return name;
+    }
 
 }

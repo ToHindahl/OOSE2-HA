@@ -1,8 +1,11 @@
 package W2_3;
 
-public class Main {
+import W2_2.Consumer;
+import W2_2.Producer;
+
+public class Test {
     public static void main(String[] args) {
-        Buffer blockingQueue = new Buffer(2);
+        BlockingQueueBuffer blockingQueue = new BlockingQueueBuffer(2);
         (new Producer("p1", blockingQueue)).start();
         (new Producer("p2", blockingQueue)).start();
         (new Producer("p3", blockingQueue)).start();

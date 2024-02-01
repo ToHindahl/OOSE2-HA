@@ -1,16 +1,16 @@
 package W2_2;
 
-public class Buffer {
+public class Buffer<T> {
 
     private boolean available;
-    private int data;
+    private T data;
 
     public Buffer() {
         this.available = true;
     }
 
 
-    public synchronized void put(int data, Producer p) throws InterruptedException {
+    public synchronized void put(T data, Producer p) throws InterruptedException {
         while(available){
             System.out.println("Producer " + p + " is waiting to send value " + data);
             wait();
@@ -19,7 +19,7 @@ public class Buffer {
         available = true;
         notifyAll();
     }
-    public synchronized int get(Consumer c) throws InterruptedException {
+    public synchronized T get(Consumer c) throws InterruptedException {
         while(available) {
             System.out.println("Consumer " + c + " is waiting to receive value " + data);
             wait();
