@@ -5,6 +5,8 @@ import W3_1_1.BinarySemaphore;
 import java.util.Arrays;
 import java.util.Map;
 
+import static java.lang.Thread.sleep;
+
 public class RWAccessControl<T> {
     private T[] data;
     private int activeReaders = 0;
@@ -15,8 +17,6 @@ public class RWAccessControl<T> {
 
     public RWAccessControl(T[] data) {
         this.data = data;
-        this.readSemaphore = readSemaphore;
-        this.writeSemaphore = writeSemaphore;
         this.readSemaphore = new BinarySemaphore();
         this.writeSemaphore = new BinarySemaphore();
     }
@@ -44,6 +44,7 @@ public class RWAccessControl<T> {
         System.out.println("Wrote changes " + changes);
         writerWriting = false;
         writeSemaphore.release();
+        readSemaphore.release();
     }
 
     public T[] read() throws InterruptedException {
@@ -64,15 +65,19 @@ public class RWAccessControl<T> {
         activeReaders++;
         System.out.println(activeReaders + " many readers active");
         readSemaphore.release();
+        writeSemaphore.release();
 
-        T[] returnValue = Arrays.copyOf(data, data.length);
+        T[] returnValue = Arrays.copyOf(data, data.length); // Lesen
+        sleep(50);
 
         readSemaphore.acquire();
         activeReaders--;
         System.out.println("Read values " + Arrays.toString(returnValue));
-        if (activeReaders == 0) {
-            writeSemaphore.release();
-        }
+        /**
+         *         if (activeReaders == 0) {
+         *             writeSemaphore.release();
+         *         }
+         */
         readSemaphore.release();
 
         return returnValue;

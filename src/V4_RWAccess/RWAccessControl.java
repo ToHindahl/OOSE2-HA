@@ -3,6 +3,8 @@ package V4_RWAccess;
 import java.util.Arrays;
 import java.util.Map;
 
+import static java.lang.Thread.sleep;
+
 public class RWAccessControl<T> {
 
     private T[] data;
@@ -59,7 +61,7 @@ public class RWAccessControl<T> {
 
         // nicht synchronized
         T[] returnValue = data;
-
+        sleep(50);
         synchronized (this){
             //nach dem Lesen: activesReader--, notifyAll();
             activeReaders--;

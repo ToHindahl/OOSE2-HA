@@ -2,7 +2,20 @@ package W4_2;
 
 
 public class Lock {
+    protected boolean isLocked() {
+        return isLocked;
+    }
+
+    protected void setLocked(boolean locked) {
+        isLocked = locked;
+    }
+
     private boolean isLocked = false;
+
+    protected Thread getLockingThread() {
+        return lockingThread;
+    }
+
     private Thread lockingThread;
     public synchronized void lock() throws InterruptedException{
         while(isLocked) wait();
